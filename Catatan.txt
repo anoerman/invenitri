@@ -1,0 +1,17 @@
+SKELETON ISENG
+==============
+
+Skeleton ini pake template AdminLTE 2.3.11 (Standarnya di warna hitam putih)
+File nya ada di assets/template. Jadi nanti kalo ada template baru tinggal
+masukkan aja di dalamnya, terus ubah tampilannya deh di View.
+Sudah ada sistem login pake Ion Auth jadi bisa langsung dipake buat login.
+
+Ini adalah dasar aplikasinya. Beberapa yang harus diperhatikan sebelum penggunaan :
+1. Setting database dan user loginnya jangan lupa.
+2. Setting nama aplikasinya di file site.php di folder config bro.
+3. Sistem login yang langsung redirect ke page terakhir itu, delimiternya pake '%'
+   Jadi -misal- kalo mau langsung redirect ke dashboard/statistik bikin di parameter
+   loginnya itu dashboard%statistik. Nanti '%' bakal di ganti '/' sama Auth Controller
+4. Controller Auth menampilkan semua user yang bisa login ke aplikasi (Standar Ion Auth)
+
+Good Luck
