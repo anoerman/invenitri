@@ -14,6 +14,7 @@ class Inventory_model extends CI_Model
 		$this->datas_table      = 'inv_datas';
 		$this->categories_table = 'inv_categories';
 		$this->locations_table  = 'inv_locations';
+		$this->status_table     = 'inv_status';
 		$this->users_table      = 'users';
 		$this->loggedinuser     = $this->ion_auth->user()->row();
 	}
@@ -110,6 +111,7 @@ class Inventory_model extends CI_Model
 			$this->datas_table.".model, ".
 			$this->datas_table.".serial_number, ".
 			$this->datas_table.".status, ".
+			$this->status_table.".name AS status_name, ".
 			$this->datas_table.".color, ".
 			$this->datas_table.".length, ".
 			$this->datas_table.".width, ".
@@ -143,6 +145,12 @@ class Inventory_model extends CI_Model
 			$this->datas_table.'.location_id = '.$this->locations_table.'.id',
 			'left');
 
+		// join status table
+		$this->db->join(
+			$this->status_table,
+			$this->datas_table.'.status = '.$this->status_table.'.id',
+			'left');
+
 		// join user table
 		$this->db->join(
 			$this->users_table,
@@ -161,6 +169,7 @@ class Inventory_model extends CI_Model
 			$this->db->limit($limit, $start);
 		}
 
+		$this->db->order_by($this->datas_table.'.id', 'desc');
 		$datas = $this->db->get();
 		return $datas;
 	}
@@ -233,6 +242,7 @@ class Inventory_model extends CI_Model
 			$this->db->limit($limit, $start);
 		}
 
+		$this->db->order_by($this->datas_table.'.id', 'desc');
 		$datas = $this->db->get();
 		return $datas;
 	}

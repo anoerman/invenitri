@@ -16,7 +16,7 @@ class Auth extends CI_Controller
 		$this->load->helper(array('url', 'language'));
 
 		$this->form_validation->set_error_delimiters(
-			$this->config->item('error_start_delimiter', 'ion_auth'), 
+			$this->config->item('error_start_delimiter', 'ion_auth'),
 			$this->config->item('error_end_delimiter', 'ion_auth')
 		);
 
@@ -25,7 +25,7 @@ class Auth extends CI_Controller
 		// model
 		$this->load->model(
 			array(
-				'profile_model', 
+				'profile_model',
 			)
 		);
 
@@ -33,7 +33,7 @@ class Auth extends CI_Controller
 		// used in every pages
 		if ($this->ion_auth->logged_in()) {
 			// user detail
-			$loggedinuser = $this->ion_auth->user()->row(); 
+			$loggedinuser = $this->ion_auth->user()->row();
 			$this->data['user_full_name'] = $loggedinuser->first_name . " " . $loggedinuser->last_name;
 			$this->data['user_photo']     = $this->profile_model->get_user_photo($loggedinuser->username)->row();
 		}
@@ -78,9 +78,9 @@ class Auth extends CI_Controller
 	* Log the user in
 	* Modified so that if session is over, user can continue to
 	* access the last page they visit (2017-12-04)
-	* 
+	*
 	* @param 	string 		$redirect_to
-	* 
+	*
 	*/
 	public function login($redirect_to = "")
 	{
@@ -104,7 +104,7 @@ class Auth extends CI_Controller
 
 				// Jika ada param redirect_to, kirim kembali ke halaman sebelumnya.
 				if ($redirect_to !== "") {
-					$redirect_page = str_replace("%", "/", $redirect_to);
+					$redir_page = str_replace("%", "/", $redirect_to);
 				}
 				//redirect them back to the home page
 				else {
@@ -121,7 +121,7 @@ class Auth extends CI_Controller
 
 				// Jika ada param redirect_to, kirim kembali ke halaman sebelumnya.
 				if ($redirect_to !== "") {
-					$redirect_page = str_replace("%", "/", $redirect_to);
+					$redir_page = str_replace("%", "/", $redirect_to);
 				}
 				//redirect them back to the home page
 				else {
@@ -146,6 +146,7 @@ class Auth extends CI_Controller
 				'id' => 'password',
 				'type' => 'password',
 			);
+			$this->data['redirect_to'] = ($redirect_to!=="") ? "/".$redirect_to : "";
 
 			$this->_render_page('auth/login', $this->data);
 		}

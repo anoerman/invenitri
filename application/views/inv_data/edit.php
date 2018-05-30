@@ -20,14 +20,14 @@
 		<!-- Insert New Data box -->
 		<div class="box">
 			<div class="box-header with-border">
-				<h3 class="box-title">Add New Data
+				<h3 class="box-title">Edit Data
 				</h3>
 
 				<div class="box-tools pull-right">
 					<!-- <button class="btn btn-default btn-box-tool" title="Show / Hide" id="myboxwidget"><i class="fa fa-plus"></i> Show / Hide</button> -->
 				</div>
 			</div>
-			<div class="box-body" id="add_new">
+			<div class="box-body" id="edit_data">
         <?php echo $message;?>
         <?php foreach ($data_list->result() as $data){
           $curr_code             = $data->code;

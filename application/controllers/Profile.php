@@ -59,7 +59,7 @@ class Profile extends CI_Controller {
 		// Jika tidak login, kembalikan ke halaman utama
 		if (!$this->ion_auth->logged_in())
 		{
-			redirect('/', 'refresh');
+			redirect('auth/login/profile', 'refresh');
 		}
 		// Jika login
 		else
@@ -86,7 +86,7 @@ class Profile extends CI_Controller {
 		// Jika tidak login, kembalikan ke halaman utama
 		if (!$this->ion_auth->logged_in())
 		{
-			redirect('/', 'refresh');
+			redirect('auth/login/profile', 'refresh');
 		}
 		// Jika login
 		else

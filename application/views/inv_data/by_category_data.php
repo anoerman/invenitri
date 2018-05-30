@@ -56,7 +56,7 @@
 									<td><?php if ($data->thumbnail!="") :?><a href="<?php echo base_url('assets/uploads/images/inventory/').$data->photo ?>" data-fancybox data-caption="<?php echo $data->brand . " " . $data->model ?>">
 										<img src="<?php echo base_url('assets/uploads/images/inventory/').$data->thumbnail ?>" alt="<?php echo $data->brand . " " . $data->model ?>"></a><?php endif ?></td>
 									<td width="15%">
-										<form action="<?php echo base_url('inventory/delete/'.$data->id) ?>" method="post" autocomplete="off">
+										<form action="<?php echo base_url('inventory/delete/'.$data->code) ?>" method="post" autocomplete="off">
 											<div class="btn-group-vertical">
 												<a class="btn btn-sm btn-primary" href="<?php echo base_url('inventory/edit/'.$data->code) ?>" role="button"><i class="fa fa-pencil"></i> Edit</a>
 												<input type="hidden" name="id" value="<?php echo $data->id; ?>">

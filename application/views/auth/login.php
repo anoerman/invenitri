@@ -34,7 +34,7 @@
 		<p class="login-box-msg">Log in to start your session</p>
 		<?php echo $message; ?>
 
-		<?php echo form_open("auth/login", array('autocomplete' => 'off'));?>
+		<?php echo form_open("auth/login".$redirect_to, array('autocomplete' => 'off'));?>
 			<div class="form-group has-feedback">
 					<input type="text" name="identity" id="identity" class="form-control"  value="<?php echo set_value('identity'); ?>" placeholder="Username" autofocus required/>
 					<span class=" glyphicon glyphicon-user form-control-feedback"></span>
@@ -45,7 +45,7 @@
 			</div>
 			<div class="form-group">
 				<label for="remember">
-					<input type="checkbox" name="remember" id="remember" value="1"> &nbsp; 
+					<input type="checkbox" name="remember" id="remember" value="1"> &nbsp;
 					Remember me
 				</label>
 			</div>
@@ -56,7 +56,7 @@
 					</div><!-- /.col -->
 			</div>
 		<?php echo form_close();?>
-		
+
 		<div class="form-group text-center">
 			<a href="<?php echo base_url('auth/forgot_password') ?>">I forgot my password</a><br>
 		</div>

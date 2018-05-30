@@ -56,7 +56,7 @@ class Locations extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			redirect('/', 'refresh');
+			redirect('auth/login/locations', 'refresh');
 		}
 		// Logged in
 		else{
@@ -104,7 +104,7 @@ class Locations extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			redirect('/', 'refresh');
+			redirect('auth/login/locations', 'refresh');
 		}
 		// Logged in
 		else {
@@ -278,7 +278,7 @@ class Locations extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()) {
-			redirect('/', 'refresh');
+			redirect('auth/login/locations', 'refresh');
 		}
 		// Logged in
 		else {
@@ -394,7 +394,7 @@ class Locations extends CI_Controller {
 		// Jika tidak login, kembalikan ke halaman utama
 		if (!$this->ion_auth->logged_in())
 		{
-			redirect('/', 'refresh');
+			redirect('auth/login/locations', 'refresh');
 		}
 		// Jika login
 		else

@@ -60,7 +60,7 @@ class Inventory extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			redirect('/', 'refresh');
+			redirect('auth/login/inventory', 'refresh');
 		}
 		// Logged in
 		else{
@@ -97,7 +97,7 @@ class Inventory extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			redirect('/', 'refresh');
+			redirect('auth/login/inventory', 'refresh');
 		}
 		// Logged in
 		else{
@@ -147,7 +147,10 @@ class Inventory extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			redirect('/', 'refresh');
+			if ($code!="") {
+				$code = "%".$code;
+			}
+			redirect('auth/login/inventory', 'refresh');
 		}
 		// Logged in
 		else{
@@ -230,14 +233,21 @@ class Inventory extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			redirect('/', 'refresh');
+			redirect('auth/login/inventory', 'refresh');
 		}
 		// Logged in
 		else{
 			// If code is provided, show data based on code
 			if ($code!="") {
-				// Show all data based on code
-				$this->data['data_list'] = $this->inventory_model->get_inventory_by_code(
+				// Show detailed data based on code
+				$this->data['data_detail'] = $this->inventory_model->get_inventory_by_code(
+					$code
+				);
+				// Show logs
+				$this->data['location_logs'] = $this->logs_model->get_location_log_by_code(
+					$code
+				);
+				$this->data['status_logs'] = $this->logs_model->get_status_log_by_code(
 					$code
 				);
 
@@ -247,7 +257,7 @@ class Inventory extends CI_Controller {
 
 				$this->load->view('partials/_alte_header', $this->data);
 				$this->load->view('partials/_alte_menu');
-				$this->load->view('inv_data/by_category_data');
+				$this->load->view('inv_data/detail');
 				$this->load->view('partials/_alte_footer');
 				$this->load->view('inv_data/js');
 				// $this->load->view('js_script');
@@ -268,7 +278,7 @@ class Inventory extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			redirect('/', 'refresh');
+			redirect('auth/login/inventory', 'refresh');
 		}
 		// Logged in
 		else {
@@ -527,7 +537,7 @@ class Inventory extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()) {
-			redirect('/', 'refresh');
+			redirect('auth/login/inventory', 'refresh');
 		}
 		// Logged in
 		else {
@@ -684,12 +694,12 @@ class Inventory extends CI_Controller {
 	*	@return 	void
 	*
 	*/
-	public function delete($id)
+	public function delete($code)
 	{
 		// Jika tidak login, kembalikan ke halaman utama
 		if (!$this->ion_auth->logged_in())
 		{
-			redirect('/', 'refresh');
+			redirect('auth/login/inventory', 'refresh');
 		}
 		// Jika login
 		else
@@ -711,24 +721,24 @@ class Inventory extends CI_Controller {
 					);
 
 					// check to see if we are updating the data
-					if ($this->categories_model->update_category($id, $data)) {
+					if ($this->inventory_model->update_inventory_by_code($code, $data)) {
 						$this->session->set_flashdata('message',
 							$this->config->item('message_start_delimiter', 'ion_auth')
-							."Category Deleted!".
+							."Inventory Deleted!".
 							$this->config->item('message_end_delimiter', 'ion_auth')
 						);
 					}
 					else {
 						$this->session->set_flashdata('message',
 							$this->config->item('error_start_delimiter', 'ion_auth')
-							."Category Delete Failed!".
+							."Inventory Delete Failed!".
 							$this->config->item('error_end_delimiter', 'ion_auth')
 						);
 					}
 				}
 			}
 			// Always redirect no matter what!
-			redirect('categories', 'refresh');
+			redirect('inventory', 'refresh');
 		}
 	}
 	// Delete data end

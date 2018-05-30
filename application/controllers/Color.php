@@ -56,7 +56,7 @@ class Color extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			redirect('/', 'refresh');
+			redirect('auth/login/color', 'refresh');
 		}
 		// Logged in
 		else{
@@ -104,7 +104,7 @@ class Color extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			redirect('/', 'refresh');
+			redirect('auth/login/color', 'refresh');
 		}
 		// Logged in
 		else {
@@ -207,7 +207,7 @@ class Color extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()) {
-			redirect('/', 'refresh');
+			redirect('auth/login/color', 'refresh');
 		}
 		// Logged in
 		else {
@@ -273,7 +273,7 @@ class Color extends CI_Controller {
 		// Jika tidak login, kembalikan ke halaman utama
 		if (!$this->ion_auth->logged_in())
 		{
-			redirect('/', 'refresh');
+			redirect('auth/login/color', 'refresh');
 		}
 		// Jika login
 		else
