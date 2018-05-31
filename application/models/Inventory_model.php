@@ -383,6 +383,90 @@ class Inventory_model extends CI_Model
 	}
 
 	/**
+	*	Get Inventory by keyword and filters provided via
+	* input form. From inv inv_datas table
+	*
+	*	@param 		string 		$keyword
+	*	@param 		array 		$filters
+	*	@return 	array 		$datas
+	*
+	*/
+	public function get_inventory_by_keyword($keyword, $filters)
+	{
+		$this->db->select(
+			$this->datas_table.".id, ".
+			$this->datas_table.".code, ".
+			$this->datas_table.".brand, ".
+			$this->datas_table.".model, ".
+			$this->datas_table.".serial_number, ".
+			$this->datas_table.".status, ".
+			$this->status_table.".name AS status_name, ".
+			$this->datas_table.".color, ".
+			$this->datas_table.".length, ".
+			$this->datas_table.".width, ".
+			$this->datas_table.".height, ".
+			$this->datas_table.".weight, ".
+			$this->datas_table.".price, ".
+			$this->datas_table.".date_of_purchase, ".
+			$this->datas_table.".photo, ".
+			$this->datas_table.".thumbnail, ".
+			$this->datas_table.".description, ".
+			$this->datas_table.".deleted, ".
+			$this->datas_table.".category_id, ".
+			$this->categories_table.".name AS category_name, ".
+			$this->datas_table.".location_id, ".
+			$this->locations_table.".name AS location_name, ".
+			$this->users_table.".username, ".
+			$this->users_table.".first_name, ".
+			$this->users_table.".last_name"
+		);
+		$this->db->from($this->datas_table);
+
+		// join categories table
+		$this->db->join(
+			$this->categories_table,
+			$this->datas_table.'.category_id = '.$this->categories_table.'.id',
+			'left');
+
+		// join locations table
+		$this->db->join(
+			$this->locations_table,
+			$this->datas_table.'.location_id = '.$this->locations_table.'.id',
+			'left');
+
+		// join status table
+		$this->db->join(
+			$this->status_table,
+			$this->datas_table.'.status = '.$this->status_table.'.id',
+			'left');
+
+		// join user table
+		$this->db->join(
+			$this->users_table,
+			$this->datas_table.'.created_by = '.$this->users_table.'.username',
+			'left');
+
+		$this->db->where($this->datas_table.'.deleted', '0');
+
+		// Keyword
+		$this->db->like($this->datas_table.'.code', $keyword);
+		$this->db->or_like('brand', $keyword);
+		$this->db->or_like('model', $keyword);
+		$this->db->or_like('serial_number', $keyword);
+
+		// Filters
+		foreach ($filters as $key => $value) {
+			if ($value!="") {
+				$this->db->where_in($key, $value);
+			}
+		}
+
+		$this->db->order_by($this->datas_table.'.id', 'desc');
+		$datas = $this->db->get();
+		return $datas;
+	}
+
+	/**
 	*	Insert datas
 	*	from datas form
 	*

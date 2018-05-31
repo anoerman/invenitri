@@ -351,6 +351,77 @@ class Inventory extends CI_Controller {
 	// Inventory by category end
 
 	/**
+	*	Search
+	*	Showing inventory search form.
+	*
+	* @param 		string
+	*	@return 	void
+	*
+	*/
+	public function search($process="")
+	{
+		// Not logged in, redirect to home
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login/inventory', 'refresh');
+		}
+		// Logged in
+		else{
+			$this->data['cat_list']   = $this->categories_model->get_categories('','','','asc');
+			$this->data['stat_list']  = $this->status_model->get_status('','','','asc');
+			$this->data['loc_list']   = $this->locations_model->get_locations('','','','asc');
+			$this->data['col_list']   = $this->color_model->get_color('','','','asc');
+
+			// input validation rules
+			$this->form_validation->set_rules(
+				'keyword',
+				'Keyword',
+				'alpha_numeric_spaces|trim|required|min_length[3]'
+			);
+
+			// check if there's valid input
+			if (isset($_POST) && !empty($_POST)) {
+				// validation run
+				if ($this->form_validation->run() === TRUE) {
+					// set variables for keyword and filters
+					$keyword  = $this->input->post('keyword');
+					$category = (!empty($this->input->post('category'))) ?
+					implode($this->input->post('category'), ",") : "";
+					$location = (!empty($this->input->post('location'))) ?
+					implode($this->input->post('location'), ",") : "";
+					$status   = (!empty($this->input->post('status'))) ?
+					implode($this->input->post('status'), ",") : "";
+					$filters  = array(
+						'category_id' => $category,
+						'location_id' => $location,
+						'status'      => $status
+					);
+					$this->data['results'] = $this->inventory_model->get_inventory_by_keyword(
+						$keyword,
+						$filters
+					);
+
+					$this->session->set_flashdata('message',
+						$this->config->item('success_start_delimiter', 'ion_auth')
+						."Search results with keyword '$keyword'".
+						$this->config->item('success_end_delimiter', 'ion_auth')
+					);
+				}
+			}
+			// set the flash data error message if there is one
+			$this->data['message'] = (validation_errors()) ? validation_errors() :
+			$this->session->flashdata('message');
+
+			$this->load->view('partials/_alte_header', $this->data);
+			$this->load->view('partials/_alte_menu');
+			$this->load->view('inv_data/search_form');
+			$this->load->view('partials/_alte_footer');
+			$this->load->view('inv_data/js');
+			$this->load->view('js_script');
+		}
+	}
+	// Index end
+
+	/**
 	*	Add New Data
 	*	If there's data sent, insert
 	*	Else, show the form

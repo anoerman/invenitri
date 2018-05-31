@@ -5,9 +5,9 @@
 		<!-- sidebar: style can be found in sidebar.less -->
 		<section class="sidebar">
 			<!-- search form -->
-			<form action="#" method="get" class="sidebar-form">
+			<form action="<?php echo base_url('inventory/search') ?>" method="post" class="sidebar-form" autocomplete="off">
 				<div class="input-group">
-					<input type="text" name="q" class="form-control" placeholder="Search...">
+					<input type="text" name="keyword" class="form-control" placeholder="Search for inventory">
 					<span class="input-group-btn">
 						<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
 						</button>
@@ -36,6 +36,7 @@
             <li><a href="<?php echo base_url('inventory/all') ?>"><i class="fa fa-list-alt"></i> All Data</a></li>
             <li><a href="<?php echo base_url('inventory/by_category') ?>"><i class="fa fa-star-o"></i> By Category</a></li>
             <li><a href="<?php echo base_url('inventory/by_location') ?>"><i class="fa fa-map-pin"></i> By Location</a></li>
+            <li><a href="<?php echo base_url('inventory/search') ?>"><i class="fa fa-search"></i> Search</a></li>
           </ul>
         </li>
 				<li class="header">MASTER</li>
