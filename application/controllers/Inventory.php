@@ -147,9 +147,6 @@ class Inventory extends CI_Controller {
 	{
 		// Not logged in, redirect to home
 		if (!$this->ion_auth->logged_in()){
-			if ($code!="") {
-				$code = "%".$code;
-			}
 			redirect('auth/login/inventory', 'refresh');
 		}
 		// Logged in
@@ -202,23 +199,110 @@ class Inventory extends CI_Controller {
 				$this->load->view('inv_data/js');
 				// $this->load->view('js_script');
 			}
+			// Summary
+			else {
+				// inventory by category summary
+				$this->data['summary'] = $this->inventory_model->get_inventory_by_category_summary();
 
-			// inventory by category summary
-			$this->data['summary'] = $this->inventory_model->get_inventory_by_category_summary();
+				// set the flash data error message if there is one
+				$this->data['message'] = (validation_errors()) ? validation_errors()
+				: $this->session->flashdata('message');
 
-			// set the flash data error message if there is one
-			$this->data['message'] = (validation_errors()) ? validation_errors()
-			: $this->session->flashdata('message');
-
-			$this->load->view('partials/_alte_header', $this->data);
-			$this->load->view('partials/_alte_menu');
-			$this->load->view('inv_data/by_category_index');
-			$this->load->view('partials/_alte_footer');
-			$this->load->view('inv_data/js');
-			$this->load->view('js_script');
+				$this->load->view('partials/_alte_header', $this->data);
+				$this->load->view('partials/_alte_menu');
+				$this->load->view('inv_data/by_category_index');
+				$this->load->view('partials/_alte_footer');
+				$this->load->view('inv_data/js');
+				$this->load->view('js_script');
+			}
 		}
 	}
 	// Inventory by category end
+
+	/**
+	*	Inventory by location.
+	*	Showing inventory location name and total inventory per location.
+	* If code is provided, show data based on code.
+	*
+	*	@param 		string 		$code
+	*	@return 	void
+	*
+	*/
+	public function by_location($code="", $page="")
+	{
+		// Not logged in, redirect to home
+		if (!$this->ion_auth->logged_in()){
+			redirect('auth/login/inventory', 'refresh');
+		}
+		// Logged in
+		else{
+			// If code is provided, show data based on code
+			if ($code!="") {
+				// Get location detail
+				$location_detail = $this->locations_model->get_locations_by_code($code);
+				// If exists, set detailed data. Else redirect back because invalid code
+				if (count($location_detail->result())>0) {
+					foreach ($location_detail->result() as $loc_data) {
+						$this->data['location_name'] = $loc_data->name;
+						$this->data['location_desc'] = $loc_data->detail;
+					}
+				}
+				else {
+					redirect('inventory/by_location', 'refresh');
+				}
+
+				// Show all data based on code
+				$this->data['data_list']  = $this->inventory_model->get_inventory_by_location_code(
+					$code
+				);
+
+				// Set pagination
+				$config['base_url']         = base_url('inventory/by_location/'.$code);
+				$config['use_page_numbers'] = TRUE;
+				$config['total_rows']       = count($this->data['data_list']->result());
+				$config['per_page']         = 15;
+				$this->pagination->initialize($config);
+
+				// Get datas and limit based on pagination settings
+				if ($page=="") { $page = 1; }
+				$this->data['data_list'] = $this->inventory_model->get_inventory_by_location_code(
+					$code,
+					$config['per_page'],
+					( $page - 1 ) * $config['per_page']
+				);
+				// $this->data['last_query'] = $this->db->last_query();
+				$this->data['pagination'] = $this->pagination->create_links();
+
+				// set the flash data error message if there is one
+				$this->data['message'] = (validation_errors()) ? validation_errors()
+				: $this->session->flashdata('message');
+
+				$this->load->view('partials/_alte_header', $this->data);
+				$this->load->view('partials/_alte_menu');
+				$this->load->view('inv_data/by_location_data');
+				$this->load->view('partials/_alte_footer');
+				$this->load->view('inv_data/js');
+				// $this->load->view('js_script');
+			}
+			// Summary
+			else {
+				// inventory by location summary
+				$this->data['summary'] = $this->inventory_model->get_inventory_by_location_summary();
+
+				// set the flash data error message if there is one
+				$this->data['message'] = (validation_errors()) ? validation_errors()
+				: $this->session->flashdata('message');
+
+				$this->load->view('partials/_alte_header', $this->data);
+				$this->load->view('partials/_alte_menu');
+				$this->load->view('inv_data/by_location_index');
+				$this->load->view('partials/_alte_footer');
+				$this->load->view('inv_data/js');
+				$this->load->view('js_script');
+			}
+		}
+	}
+	// Inventory by location end
 
 	/**
 	*	Inventory detail.

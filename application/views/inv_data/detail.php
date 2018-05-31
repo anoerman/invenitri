@@ -57,7 +57,7 @@
             <img src="<?php echo base_url("assets/uploads/images/inventory/").$curr_photo ?>" alt="<?php echo $curr_brand . " " . $curr_model ?>">
           </a>
         <?php else: ?>
-          <img src="<?php echo base_url("assets/uploads/images/inventory/no_picture.png") ?>" class="center-block" alt="<?php echo $curr_brand . " " . $curr_model ?>">
+          <img src="<?php echo base_url("assets/uploads/images/no_picture.png") ?>" class="center-block" alt="<?php echo $curr_brand . " " . $curr_model ?>">
           <h3 class="text-center">No Image</h3>
           <br><hr>
         <?php endif; ?>

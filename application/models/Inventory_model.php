@@ -248,6 +248,79 @@ class Inventory_model extends CI_Model
 	}
 
 	/**
+	*	Get Inventory by location code
+	*	from inv inv_datas table
+	*
+	*	@param 		string 		$code
+	*	@return 	array 		$datas
+	*
+	*/
+	public function get_inventory_by_location_code($code='',$limit='', $start='')
+	{
+		$this->db->select(
+			$this->datas_table.".id, ".
+			$this->datas_table.".code, ".
+			$this->datas_table.".brand, ".
+			$this->datas_table.".model, ".
+			$this->datas_table.".serial_number, ".
+			$this->datas_table.".status, ".
+			$this->datas_table.".color, ".
+			$this->datas_table.".length, ".
+			$this->datas_table.".width, ".
+			$this->datas_table.".height, ".
+			$this->datas_table.".weight, ".
+			$this->datas_table.".price, ".
+			$this->datas_table.".date_of_purchase, ".
+			$this->datas_table.".photo, ".
+			$this->datas_table.".thumbnail, ".
+			$this->datas_table.".description, ".
+			$this->datas_table.".deleted, ".
+			$this->datas_table.".category_id, ".
+			$this->categories_table.".name AS category_name, ".
+			$this->datas_table.".location_id, ".
+			$this->locations_table.".name AS location_name, ".
+			$this->users_table.".username, ".
+			$this->users_table.".first_name, ".
+			$this->users_table.".last_name"
+		);
+		$this->db->from($this->datas_table);
+
+		// join categories table
+		$this->db->join(
+			$this->categories_table,
+			$this->datas_table.'.category_id = '.$this->categories_table.'.id',
+			'left');
+
+		// join locations table
+		$this->db->join(
+			$this->locations_table,
+			$this->datas_table.'.location_id = '.$this->locations_table.'.id',
+			'left');
+
+		// join user table
+		$this->db->join(
+			$this->users_table,
+			$this->datas_table.'.created_by = '.$this->users_table.'.username',
+			'left');
+
+		$this->db->where($this->datas_table.'.deleted', '0');
+
+		// if code provided
+		if ($code!='') {
+			$this->db->where($this->locations_table.'.code', $code);
+		}
+
+		// if limit and start provided
+		if ($limit!="") {
+			$this->db->limit($limit, $start);
+		}
+
+		$this->db->order_by($this->datas_table.'.id', 'desc');
+		$datas = $this->db->get();
+		return $datas;
+	}
+
+	/**
 	*	Get Inventory by category summary
 	*	from inv inv_datas table
 	*
@@ -259,7 +332,7 @@ class Inventory_model extends CI_Model
 		$this->db->select(
 			$this->datas_table.".category_id, ".
 			$this->categories_table.".code, ".
-			$this->categories_table.".name AS category_name, ".
+			$this->categories_table.".name, ".
 			"COUNT(".$this->datas_table.".category_id) AS total"
 		);
 		$this->db->from($this->datas_table);
@@ -273,6 +346,37 @@ class Inventory_model extends CI_Model
 		$this->db->where($this->datas_table.'.deleted', '0');
 
 		$this->db->group_by($this->datas_table.'.category_id');
+
+		$datas = $this->db->get();
+		return $datas;
+	}
+
+	/**
+	*	Get Inventory by location summary
+	*	from inv inv_datas table
+	*
+	*	@return 	array 		$datas
+	*
+	*/
+	public function get_inventory_by_location_summary()
+	{
+		$this->db->select(
+			$this->datas_table.".location_id, ".
+			$this->locations_table.".code, ".
+			$this->locations_table.".name, ".
+			"COUNT(".$this->datas_table.".location_id) AS total"
+		);
+		$this->db->from($this->datas_table);
+
+		// join categories table
+		$this->db->join(
+			$this->locations_table,
+			$this->datas_table.'.location_id = '.$this->locations_table.'.id',
+			'left');
+
+		$this->db->where($this->datas_table.'.deleted', '0');
+
+		$this->db->group_by($this->datas_table.'.location_id');
 
 		$datas = $this->db->get();
 		return $datas;

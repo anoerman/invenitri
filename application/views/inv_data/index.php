@@ -318,7 +318,7 @@
 									<i class="fa fa-star fa-3x"></i><br>
 									<h4>Data by Categories</h4>
 								</a>
-								<a href="#" class="btn btn-default" role="button">
+								<a href="<?php echo base_url('inventory/by_location'); ?>" class="btn btn-default" role="button">
 									<i class="fa fa-map-marker fa-3x"></i><br>
 									<h4>Data by Locations</h4>
 								</a>

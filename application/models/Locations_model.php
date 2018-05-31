@@ -72,6 +72,60 @@ class Locations_model extends CI_Model
 	}
 
 	/**
+	*	Get Locations by Code
+	*	from inv locations table
+	*	sort by id desc
+	*
+	*	@param 		string 		$code
+	*	@param 		string 		$limit
+	*	@param 		string 		$start
+	*	@param 		string 		$order_method
+	*	@return 	array 		$datas
+	*
+	*/
+	public function get_locations_by_code($code='',$limit='', $start='', $order_method='desc')
+	{
+		$this->db->select(
+			$this->locations_table.".id, ".
+			$this->locations_table.".code, ".
+			$this->locations_table.".name, ".
+			$this->locations_table.".detail, ".
+			$this->locations_table.".photo, ".
+			$this->locations_table.".thumbnail, ".
+			$this->users_table.".username, ".
+			$this->users_table.".first_name, ".
+			$this->users_table.".last_name"
+		);
+		$this->db->from($this->locations_table);
+
+		// join user table
+		$this->db->join(
+			$this->users_table,
+			$this->locations_table.'.created_by = '.$this->users_table.'.username',
+			'left');
+
+		$this->db->where($this->locations_table.'.deleted', '0');
+
+		// if code provided
+		if ($code!='') {
+			$this->db->where($this->locations_table.'.code', $code);
+		}
+
+		// if limit and start provided
+		if ($limit!="") {
+			$this->db->limit($limit, $start);
+		}
+
+		// order by
+		if ($order_method!="") {
+			$this->db->order_by($this->locations_table.'.id', $order_method);
+		}
+
+		$datas = $this->db->get();
+		return $datas;
+	}
+
+	/**
 	*	Insert location
 	*	from location form
 	*

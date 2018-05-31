@@ -164,7 +164,7 @@ $('#myboxwidget').on('click', function(event) {
 					<?php $x = 0;
 					foreach ($summary->result() as $chartdata) {
 						$x++;
-						echo "'".$chartdata->category_name."'";
+						echo "'".$chartdata->name."'";
 						if ($x < count($summary->result())) {
 							echo ",";
 						}

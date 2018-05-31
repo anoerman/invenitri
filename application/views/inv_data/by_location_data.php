@@ -6,13 +6,13 @@
 		<section class="content-header">
 			<h1>
 				Inventory
-				<small>Your data sorted per category</small>
+				<small>Your data sorted per location</small>
 			</h1>
 
 			<ol class="breadcrumb">
 				<li><a href="<?php echo base_url("inventory") ?>"><i class="fa fa-archive"></i> Inventory</a></li>
-				<li><a href="<?php echo base_url("inventory/by_category"); ?>">Category</a></li>
-				<li class="active"><?php echo $category_name ?></li>
+				<li><a href="<?php echo base_url("inventory/by_location"); ?>">Location</a></li>
+				<li class="active"><?php echo $location_name ?></li>
 			</ol>
 		</section>
 
@@ -22,7 +22,7 @@
 			<!-- Default box -->
 			<div class="box box-primary">
 				<div class="box-header with-border">
-					<h3 class="box-title">Category : <?php echo $category_name ?>
+					<h3 class="box-title">Location : <?php echo $location_name ?>
 					</h3>
 
 					<div class="box-tools pull-right">
@@ -32,7 +32,7 @@
 				</div>
 				<div class="box-body">
 					<?php echo $message;?>
-					<?php echo $category_desc; ?>
+					<?php echo $location_desc; ?>
 					<hr>
 
 					<div class="table-responsive">
@@ -41,7 +41,7 @@
 								<tr>
 									<th>Code</th>
 									<th>Brand - Model</th>
-									<th>Location</th>
+									<th>Category</th>
 									<th>Photo</th>
 									<th>#</th>
 								</tr>
@@ -52,7 +52,7 @@
 								<tr>
 									<td><?php echo $data->code; ?></td>
 									<td><?php echo $data->brand. " " .$data->model; ?></td>
-									<td><?php echo $data->location_name; ?></td>
+									<td><?php echo $data->category_name; ?></td>
 									<td><?php if ($data->thumbnail!="") :?><a href="<?php echo base_url('assets/uploads/images/inventory/').$data->photo ?>" data-fancybox data-caption="<?php echo $data->brand . " " . $data->model ?>">
 										<img src="<?php echo base_url('assets/uploads/images/inventory/').$data->thumbnail ?>" alt="<?php echo $data->brand . " " . $data->model ?>"></a><?php endif ?></td>
 									<td width="15%">
@@ -80,7 +80,7 @@
 				<div class="box-footer text-center">
 					<?php echo $pagination; ?>
 					<br>
-					<a href="<?php echo base_url('inventory/by_category'); ?>" class="btn btn-primary">Back to Inventory by Category</a>
+					<a href="<?php echo base_url('inventory/by_location'); ?>" class="btn btn-primary">Back to Inventory by Location</a>
 					<?php echo (isset($last_query)) ? $last_query : ""; ?>&nbsp;
 					<!-- Footer -->
 				</div>
