@@ -189,6 +189,10 @@
           </div>
         </div>
 
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+          <hr>
+          <a href="<?php echo base_url('inventory/edit/').$curr_code; ?>" class="btn btn-primary btn-lg">Edit Data</a>
+        </div>
 			</div>
 			<!-- /.box-body -->
 		</div>

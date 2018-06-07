@@ -154,64 +154,64 @@ $('#myboxwidget').on('click', function(event) {
 
 <!-- Chartjs -->
 	<script type="text/javascript" src="<?php echo base_url('assets/templates/adminlte-2-3-11/plugins/chartjs/Chart.bundle.min.js'); ?>"></script>
-<?php if (isset($summary)) {
-	if (count($summary->result()) > 0) { ?>
-	<script type="text/javascript">
-		new Chart(document.getElementById("chart"), {
-			type: 'horizontalBar',
-			data: {
-				labels: [
-					<?php $x = 0;
-					foreach ($summary->result() as $chartdata) {
-						$x++;
-						echo "'".$chartdata->name."'";
-						if ($x < count($summary->result())) {
-							echo ",";
-						}
-					} ?>
-				],
-	      datasets: [{
-	        label: "Total Data ",
-	        data: [
+	<?php if (isset($summary)) {
+		if (count($summary->result()) > 0) { ?>
+		<script type="text/javascript">
+			new Chart(document.getElementById("chart"), {
+				type: 'horizontalBar',
+				data: {
+					labels: [
 						<?php $x = 0;
 						foreach ($summary->result() as $chartdata) {
 							$x++;
-							echo $chartdata->total;
+							echo "'".$chartdata->name."'";
 							if ($x < count($summary->result())) {
 								echo ",";
 							}
 						} ?>
 					],
-					backgroundColor: 'rgba(60, 141, 188,0.5)',
-	        fill: false,
-	        borderWidth: 1
-	      }]
-			},
-			options: {
-				title: {
-            display: true,
-            text: 'Total Inventory Per Category'
-        },
-				legend : {
-					display:false
+		      datasets: [{
+		        label: "Total Data ",
+		        data: [
+							<?php $x = 0;
+							foreach ($summary->result() as $chartdata) {
+								$x++;
+								echo $chartdata->total;
+								if ($x < count($summary->result())) {
+									echo ",";
+								}
+							} ?>
+						],
+						backgroundColor: 'rgba(60, 141, 188,0.5)',
+		        fill: false,
+		        borderWidth: 1
+		      }]
 				},
-	      scales: {
-	        xAxes: [{
-	          ticks: {
-	            beginAtZero: true,
-							userCallback: function(label, index, labels) {
-                 // when the floored value is the same as the value we have a whole number
-                 if (Math.floor(label) === label) {
-                   return label;
-                 }
-               },
-	          }
-	        }]
-	      },
-	    }
-		});
-	</script>
-<?php }
-} ?>
+				options: {
+					title: {
+	            display: true,
+	            text: 'Total Inventory Per Category'
+	        },
+					legend : {
+						display:false
+					},
+		      scales: {
+		        xAxes: [{
+		          ticks: {
+		            beginAtZero: true,
+								userCallback: function(label, index, labels) {
+	                 // when the floored value is the same as the value we have a whole number
+	                 if (Math.floor(label) === label) {
+	                   return label;
+	                 }
+	               },
+		          }
+		        }]
+		      },
+		    }
+			});
+		</script>
+	<?php }
+	} ?>
 
 <!-- / Chartjs -->
