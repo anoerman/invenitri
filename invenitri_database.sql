@@ -2,7 +2,8 @@
 SQLyog Ultimate v11.11 (64 bit)
 MySQL - 5.5.5-10.1.30-MariaDB : Database - invenitri_database
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -262,7 +263,7 @@ DELIMITER $$
 /*!50003 DROP TRIGGER*//*!50032 IF EXISTS */ /*!50003 `after_users_insert` */$$
 
 /*!50003 CREATE */ /*!50017 DEFINER = 'root'@'localhost' */ /*!50003 TRIGGER `after_users_insert` AFTER INSERT ON `users` FOR EACH ROW BEGIN
-	INSERT INTO `arc_database`.users_photo VALUES( NEW.username, "no_picture.png", "no_picture.png", now());
+	INSERT INTO users_photo VALUES( NEW.username, "no_picture.png", "no_picture.png", now());
     END */$$
 
 
